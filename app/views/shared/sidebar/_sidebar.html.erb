@@ -4,62 +4,98 @@
       <div class="sidebar-section-body d-flex justify-content-center">
         <h5 class="sidebar-resize-hide flex-grow-1 my-auto"><b>Menu</b></h5>
         <div>
-          <button
-            type="button"
-            class="btn btn-flat-white btn-icon btn-sm rounded-pill border-transparent sidebar-mobile-main-toggle d-xl-none"
-          >
+          <button type="button" class="btn btn-flat-white btn-icon btn-sm rounded-pill border-transparent sidebar-mobile-main-toggle d-xl-none">
             <i class="ph-x"></i>
           </button>
         </div>
       </div>
     </div>
-    <!-- Barra de pesquisa -->
+
+    <%# Barra de pesquisa %>
     <div class="sidebar-section-body">
       <div class="form-control-feedback form-control-feedback-end">
-        <input
-          type="search"
-          id="sidebar-search-input"
-          class="form-control"
-          placeholder="Pesquisar"
-          onkeyup="filterSidebar()"
-        />
+        <input type="search" id="sidebar-search-input" class="form-control" placeholder="Pesquisar" onkeyup="filterSidebar()" />
         <div class="form-control-feedback-icon">
           <i class="ph-magnifying-glass opacity-50"></i>
         </div>
       </div>
     </div>
-    <!-- Itens da sidebar -->
+
+    <%# Itens do menu %>
     <div class="sidebar-section">
       <ul class="nav nav-sidebar" data-nav-type="accordion" id="sidebar-items">
-        <li class="nav-item"></li>
-          <a href="<%= root_path %>" class="nav-link" id="config-link" data-no-close>
-            <i class="ph-house"></i>
-            <span>Home</span>
-          </a>
+
+        <%# Dashboard %>
+        <li class="nav-item">
+          <%= link_to root_path, class: "nav-link #{sidebar_active_class('home')}" do %>
+            <i class="ph-house-simple"></i>
+            <span>Dashboard</span>
+          <% end %>
         </li>
+
+        <%# ── ADMINISTRAÇÃO ──────────────────────────────────────────────── %>
+        <% if can?(:read, User) %>
+          <li class="nav-item nav-item-submenu">
+            <a href="#" class="nav-link <%= sidebar_section_active?('users', 'a_tipo_usuarios', 'a_status') %>">
+              <i class="ph-users-three"></i>
+              <span>Administração</span>
+            </a>
+            <ul class="nav nav-group-sub collapse <%= sidebar_section_active?('users', 'a_tipo_usuarios', 'a_status') %>">
+              <li class="nav-item">
+                <%= link_to users_path, class: "nav-link #{sidebar_active_class('users')}" do %>
+                  <i class="ph-user"></i>
+                  <span>Usuários</span>
+                <% end %>
+              </li>
+              <% if current_user.admin? %>
+                <li class="nav-item">
+                  <%= link_to a_tipo_usuarios_path, class: "nav-link #{sidebar_active_class('a_tipo_usuarios')}" do %>
+                    <i class="ph-tag"></i>
+                    <span>Tipos de Usuário</span>
+                  <% end %>
+                </li>
+                <li class="nav-item">
+                  <%= link_to a_status_index_path, class: "nav-link #{sidebar_active_class('a_status')}" do %>
+                    <i class="ph-toggle-right"></i>
+                    <span>Status</span>
+                  <% end %>
+                </li>
+              <% end %>
+            </ul>
+          </li>
+        <% end %>
+
+        <%# ── MÓDULOS DO PROJETO (adicione abaixo) ───────────────────────── %>
+        <%# Exemplo:
+        <li class="nav-item">
+          <%= link_to exemplos_path, class: "nav-link #{sidebar_active_class('exemplos')}" do %>
+            <i class="ph-folder"></i>
+            <span>Exemplos</span>
+          <% end %>
+        </li>
+        %>
+
       </ul>
     </div>
   </div>
 </div>
 
-  <script>
-    function filterSidebar() {
-      const input = document.getElementById('sidebar-search-input');
-      const filter = input.value.toLowerCase();
-      const navItems = document.querySelectorAll('#sidebar-items .nav-item, #sidebar-items .nav-item-header');
+<script>
+  function filterSidebar() {
+    const input    = document.getElementById('sidebar-search-input');
+    const filter   = input.value.toLowerCase();
+    const navItems = document.querySelectorAll('#sidebar-items .nav-item, #sidebar-items .nav-item-header');
 
-      navItems.forEach(item => {
-        const text = item.textContent.toLowerCase();
-        const isCollapsible = item.querySelector('.nav-group-sub');
+    navItems.forEach(item => {
+      const text          = item.textContent.toLowerCase();
+      const isCollapsible = item.querySelector('.nav-group-sub');
 
-        if (text.includes(filter)) {
-          item.style.display = ''; // Mostra o item
-          if (isCollapsible) {
-            isCollapsible.classList.add('show'); // Abre a seção colapsável
-          }
-        } else {
-          item.style.display = 'none'; // Oculta o item
-        }
-      });
-    }
-  </script>
+      if (text.includes(filter)) {
+        item.style.display = '';
+        if (isCollapsible) isCollapsible.classList.add('show');
+      } else {
+        item.style.display = 'none';
+      }
+    });
+  }
+</script>

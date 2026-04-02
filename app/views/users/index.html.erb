@@ -1,0 +1,97 @@
+<% title = "Usuários"
+   new_path = new_user_path %>
+
+<%= render "shared/context_nav" do %>
+  <span class="breadcrumb-item active">Usuários</span>
+<% end %>
+
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between">
+      <h5 class="mb-0"><i class="ph-users me-2"></i>Usuários</h5>
+      <%= link_to new_user_path, class: 'btn btn-primary btn-sm d-flex align-items-center gap-1' do %>
+        <i class="ph-plus"></i> <span>Novo usuário</span>
+      <% end %>
+    </div>
+
+    <%# Filtros %>
+    <div class="card-body border-bottom py-2">
+      <%= search_form_for @q, url: users_path, html: { class: 'row g-2 align-items-end' } do |f| %>
+        <div class="col-md-4">
+          <%= f.search_field :nome_cont, class: 'form-control form-control-sm', placeholder: 'Nome...' %>
+        </div>
+        <div class="col-md-3">
+          <%= f.search_field :email_cont, class: 'form-control form-control-sm', placeholder: 'E-mail...' %>
+        </div>
+        <div class="col-md-3">
+          <%= f.search_field :cpf_cont, class: 'form-control form-control-sm', placeholder: 'CPF...' %>
+        </div>
+        <div class="col-auto">
+          <%= f.submit 'Filtrar', class: 'btn btn-outline-secondary btn-sm' %>
+          <%= link_to 'Limpar', users_path, class: 'btn btn-outline-danger btn-sm' %>
+        </div>
+      <% end %>
+    </div>
+
+    <%# Tabela %>
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th>Nome</th>
+            <th>E-mail</th>
+            <th>CPF</th>
+            <th>Tipo</th>
+            <th>Status</th>
+            <th class="text-end">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if @users.empty? %>
+            <tr>
+              <td colspan="7" class="text-center text-muted py-4">
+                <i class="ph-users opacity-25" style="font-size: 2rem;"></i>
+                <p class="mt-2 mb-0">Nenhum usuário encontrado.</p>
+              </td>
+            </tr>
+          <% else %>
+            <% @users.each do |user| %>
+              <tr>
+                <td class="text-muted"><%= user.id %></td>
+                <td><strong><%= user.nome %></strong></td>
+                <td><%= user.email %></td>
+                <td><%= formatar_cpf(user.cpf) %></td>
+                <td><%= badge_tipo_usuario(user) %></td>
+                <td><%= badge_status_usuario(user) %></td>
+                <td class="text-end">
+                  <div class="d-flex justify-content-end gap-1">
+                    <%= link_to user_path(user), class: 'btn btn-sm btn-outline-secondary', title: 'Visualizar' do %>
+                      <i class="ph-eye"></i>
+                    <% end %>
+                    <%= link_to edit_user_path(user), class: 'btn btn-sm btn-outline-primary', title: 'Editar' do %>
+                      <i class="ph-pencil"></i>
+                    <% end %>
+                    <%= button_to user_path(user), method: :delete,
+                          class: 'btn btn-sm btn-outline-danger',
+                          title: 'Excluir',
+                          data: { confirm: "Deseja excluir #{user.nome}?" } do %>
+                      <i class="ph-trash"></i>
+                    <% end %>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+    <%# Paginação %>
+    <% if @pagy.pages > 1 %>
+      <div class="card-footer">
+        <%= render "shared/pagy", pagy: @pagy %>
+      </div>
+    <% end %>
+  </div>
+</div>

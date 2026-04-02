@@ -1,0 +1,54 @@
+<%= simple_form_for @user, html: { autocomplete: 'off' } do |f| %>
+  <%= f.error_notification %>
+
+  <div class="row g-3">
+    <div class="col-md-6">
+      <%= f.input :nome, label: 'Nome completo', placeholder: 'Nome do usuário' %>
+    </div>
+    <div class="col-md-6">
+      <%= f.input :email, label: 'E-mail', placeholder: 'email@exemplo.com', input_html: { autocomplete: 'off' } %>
+    </div>
+    <div class="col-md-4">
+      <%= f.input :cpf, label: 'CPF', placeholder: '000.000.000-00', input_html: { class: 'cpf-mask' } %>
+    </div>
+    <div class="col-md-4">
+      <%= f.input :telefone, label: 'Telefone', placeholder: '(00) 00000-0000', input_html: { class: 'phone-mask' } %>
+    </div>
+
+    <% if current_user.admin? %>
+      <div class="col-md-4">
+        <%= f.input :a_tipo_usuario_id, label: 'Tipo de usuário',
+              collection: ATipoUsuario.all.map { |t| [t.descricao, t.id] },
+              include_blank: 'Selecione...' %>
+      </div>
+      <div class="col-md-4">
+        <%= f.input :a_status_id, label: 'Status',
+              collection: AStatus.all.map { |s| [s.descricao, s.id] },
+              include_blank: 'Selecione...' %>
+      </div>
+    <% end %>
+
+    <div class="col-12"><hr class="my-1"></div>
+
+    <div class="col-md-6">
+      <%= f.input :password, label: 'Senha', hint: @user.persisted? ? 'Deixe em branco para manter a atual' : nil,
+            input_html: { autocomplete: 'new-password' } %>
+    </div>
+    <div class="col-md-6">
+      <%= f.input :password_confirmation, label: 'Confirmar senha', input_html: { autocomplete: 'new-password' } %>
+    </div>
+
+    <% if @user.persisted? %>
+      <div class="col-12">
+        <%= f.input :current_password, label: 'Senha atual (para confirmar alterações)',
+              hint: 'Necessária para salvar alterações de e-mail ou senha',
+              input_html: { autocomplete: 'current-password' } %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+    <%= link_to 'Cancelar', users_path, class: 'btn btn-outline-secondary' %>
+    <%= btn_submit(f) %>
+  </div>
+<% end %>

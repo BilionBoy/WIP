@@ -3,16 +3,15 @@
   <head>
     <title>Template</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <!-- Metadados  -->
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-    <% # Dependências CSS %>
+    <%# Dependências CSS %>
     <%= stylesheet_link_tag "/layout/assets/fonts/inter/inter.css",         "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "/layout/assets/icons/phosphor/styles.min.css", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "/layout/assets/css/all.min.css",               "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "/layout/assets/css/animate.min.css",           "data-turbo-track": "reload" %>
-    <%= stylesheet_link_tag "admin",                                  "data-turbo-track": "reload" %>
-    <% # App JS do projeto %>
+    <%= stylesheet_link_tag "admin",                                         "data-turbo-track": "reload" %>
+    <%# JavaScript %>
     <%= javascript_include_tag "/layout/assets/js/jquery/jquery.min.js",                                     "data-turbo-track": "reload" %>
     <%= javascript_include_tag "/layout/assets/js/jquery/jquery.mask.min.js",                                "data-turbo-track": "reload" %>
     <%= javascript_include_tag "/layout/assets/js/jquery/jquery.maskMoney.min.js",                           "data-turbo-track": "reload" %>
@@ -27,25 +26,31 @@
     <%= javascript_include_tag "/layout/assets/js/app.js",                                                   "data-turbo-track": "reload" %>
     <%= javascript_include_tag "/layout/assets/js/custom.js",                                                "data-turbo-track": "reload" %>
     <%= javascript_include_tag "/layout/assets/js/vendor/notifications/noty.min.js",                         "data-turbo-track": "reload" %>
-    <%= javascript_include_tag "cocoon",                                                                     "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "cocoon",                                                                      "data-turbo-track": "reload" %>
     <%= javascript_include_tag "/layout/assets/js/vendor/pickers/litepicker.js",                             "data-turbo-track": "reload" %>
     <%= javascript_include_tag "/layout/assets/js/vendor/forms/selects/bootstrap_multiselect.js",            "data-turbo-track": "reload" %>
     <%= javascript_include_tag "/layout/assets/js/vendor/tables/datatables/extensions/fixed_columns.min.js", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "/layout/assets/js/vendor/visualization/echarts/echarts.min.js",              "data-turbo-track": "reload" %>
   </head>
-  <body class="">
-    <!-- Main navbar -->
+  <body>
+    <%# Navbar principal %>
     <%= render "shared/navbar" %>
-    <!-- Page content -->
+    <%# Conteúdo da página %>
     <div class="page-content">
-      <!-- Main sidebar -->
+      <%# Sidebar principal %>
       <%= render "shared/sidebar/sidebar" %>
-      <!-- /main sidebar -->
       <div class="content-wrapper">
         <div class="content-inner">
+          <%# Breadcrumb / navegação contextual %>
           <%= yield :context_nav %>
+          <%# Flash messages %>
+          <%= render "shared/flash" %>
+          <%# Conteúdo da view %>
           <div class="content">
             <%= yield %>
           </div>
-        </body>
-      </html>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

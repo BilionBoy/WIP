@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <title>Erro — Template</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "/layout/assets/fonts/inter/inter.css",         "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "/layout/assets/icons/phosphor/styles.min.css", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "/layout/assets/css/all.min.css",               "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "admin",                                         "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "/layout/assets/js/jquery/jquery.min.js",             "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "/layout/assets/js/bootstrap/bootstrap.bundle.min.js","data-turbo-track": "reload" %>
+  </head>
+  <body class="d-flex align-items-center justify-content-center" style="min-height: 100vh; background: #f5f7fa;">
+    <%= yield %>
+  </body>
+</html>

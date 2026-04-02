@@ -1,0 +1,17 @@
+<% title = "Novo Usuário" %>
+
+<%= render "shared/context_nav" do %>
+  <%= link_to "Usuários", users_path, class: "breadcrumb-item" %>
+  <span class="breadcrumb-item active">Novo</span>
+<% end %>
+
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-header">
+      <h5 class="mb-0"><i class="ph-user-plus me-2"></i>Novo Usuário</h5>
+    </div>
+    <div class="card-body">
+      <%= render "form", user: @user %>
+    </div>
+  </div>
+</div>

@@ -1,19 +1,23 @@
 class ApplicationController < ActionController::Base
-  # before_action :authenticate_user! # Autentica o usuário antes de qualquer ação
-  include Pagy::Backend # Inclui Pagy para uso no Backend
+  include Pagy::Backend
+  include LayoutByUser
+  include DevisePermittedParameters
+  include AuthorizationHandler
 
-  # Definir o layout de acordo com o controller
-  # before_action :set_layout_by_controller
+  before_action :authenticate_user!
+  before_action :set_current_user
+  before_action :set_paper_trail_whodunnit
 
-  # private
-  #
-  # def set_layout_by_controller
-  #   if devise_controller?
-  #     self.class.layout "devise_application"
-  #   elsif controller_name == "home"
-  #     self.class.layout "home_application"
-  #   else
-  #     self.class.layout "application"
-  #   end
-  # end
+  private
+
+  def set_current_user
+    Current.user = current_user
+  end
+
+  def admin_only!
+    return if current_user&.admin?
+
+    flash[:alert] = I18n.t('messages.not_authorized')
+    redirect_back(fallback_location: root_path)
+  end
 end

@@ -20,6 +20,15 @@ module MenuxT
     config.time_zone = 'La Paz' # Configuração do Time Zone
 
     config.i18n.default_locale = :'pt-BR' # Configuração do idioma padrão
+
+    # Fila assíncrona via Good Job (Postgres, sem Redis)
+    # Modo :async — roda dentro do processo Puma, sem worker separado
+    config.active_job.queue_adapter = :good_job
+    config.good_job.execution_mode  = :async
+
+    # Redireciona todos os erros HTTP para o ErrorsController
+    config.exceptions_app = self.routes
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files

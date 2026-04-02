@@ -1,0 +1,63 @@
+<% title = @user.nome %>
+
+<%= render "shared/context_nav" do %>
+  <%= link_to "Usuários", users_path, class: "breadcrumb-item" %>
+  <span class="breadcrumb-item active"><%= @user.nome %></span>
+<% end %>
+
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between">
+      <h5 class="mb-0"><i class="ph-user me-2"></i><%= @user.nome %></h5>
+      <div class="d-flex gap-2">
+        <%= link_to edit_user_path(@user), class: 'btn btn-outline-primary btn-sm' do %>
+          <i class="ph-pencil me-1"></i> Editar
+        <% end %>
+        <%= button_to user_path(@user), method: :delete,
+              class: 'btn btn-outline-danger btn-sm',
+              data: { confirm: "Deseja excluir #{@user.nome}?" } do %>
+          <i class="ph-trash me-1"></i> Excluir
+        <% end %>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label text-muted small">Nome</label>
+          <p class="fw-semibold mb-0"><%= @user.nome %></p>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label text-muted small">E-mail</label>
+          <p class="fw-semibold mb-0"><%= @user.email %></p>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label text-muted small">CPF</label>
+          <p class="fw-semibold mb-0"><%= formatar_cpf(@user.cpf) %></p>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label text-muted small">Telefone</label>
+          <p class="fw-semibold mb-0"><%= formatar_telefone(@user.telefone) || '—' %></p>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label text-muted small">Tipo de usuário</label>
+          <p class="mb-0"><%= badge_tipo_usuario(@user) %></p>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label text-muted small">Status</label>
+          <p class="mb-0"><%= badge_status_usuario(@user) %></p>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label text-muted small">Cadastrado em</label>
+          <p class="fw-semibold mb-0"><%= formatar_data_hora(@user.created_at) %></p>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label text-muted small">Atualizado em</label>
+          <p class="fw-semibold mb-0"><%= formatar_data_hora(@user.updated_at) %></p>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer text-end">
+      <%= link_to 'Voltar', users_path, class: 'btn btn-outline-secondary btn-sm' %>
+    </div>
+  </div>
+</div>
